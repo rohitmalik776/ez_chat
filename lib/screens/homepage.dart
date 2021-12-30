@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hello_world/screens/chat_screen.dart';
 
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
-import './providers/socket_provider.dart';
+import '../providers/socket_provider.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class HomePage extends StatelessWidget {
       width: mediaQuery.size.width,
       height: mediaQuery.size.height,
       child: Card(
+        //TODO: Remove this card
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,6 +36,7 @@ class HomePage extends StatelessWidget {
               child: const Text('Connect'),
               onPressed: () {
                 socket.connectToServer(username);
+                Navigator.of(context).pushNamed(ChatScreen.routeName);
               },
             ),
           ],

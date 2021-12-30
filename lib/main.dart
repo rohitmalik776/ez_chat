@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import './homepage.dart';
+import 'screens/homepage.dart';
 import './providers/socket_provider.dart';
-import './chat_screen.dart';
+import 'screens/chat_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,14 +16,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<SocketProvider>(create: (_) => SocketProvider()),
+        ListenableProvider<SocketProvider>(create: (_) => SocketProvider()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: const HomePage(),
         routes: {
           ChatScreen.routeName: (ctx) => const ChatScreen(),
         },
