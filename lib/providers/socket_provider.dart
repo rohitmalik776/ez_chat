@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 
 import 'package:socket_io_client/socket_io_client.dart' as soc_io;
 
+import '../models/message.dart';
+
 class SocketProvider with ChangeNotifier {
-  final Map<String, List<String>> _messages = {'global': []};
+  final Map<String, List<Message>> _messages = {'global': []};
   final socket = soc_io.io('ws://192.168.0.104:5000/', <String, dynamic>{
     'transports': ['websocket'],
     'autoConnect': false,
@@ -12,8 +15,7 @@ class SocketProvider with ChangeNotifier {
   void connectToServer(String username) {
     socket.connect();
     socket.on('connect', (uid) {
-      debugPrint('$uid Connected to server!');
-      socket.emit('connect', username);
+      print('connected!');
     });
 
     socket.on('global message', (data) {
@@ -21,17 +23,18 @@ class SocketProvider with ChangeNotifier {
     });
   }
 
-  void _addGlobalMessage(String message) {
-    _messages['global']?.add(message);
+  void _addGlobalMessage(String messageData) {
+    _messages['global']?.add(Message.fromJson(messageData));
     notifyListeners();
   }
 
-  void sendGlobalMessage(String message) {
-    socket.emit('global message', message);
-    notifyListeners();
+  void sendGlobalMessage(Message message) {
+    var encodedMessage = jsonEncode(message.toJson());
+    print('send: $encodedMessage');
+    socket.emit('global message', encodedMessage);
   }
 
-  List<String> get globalMessages {
+  List<Message> get globalMessages {
     return [...?_messages['global']];
   }
 }

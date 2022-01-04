@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'screens/homepage.dart';
 import './providers/socket_provider.dart';
+import './providers/auth_provider.dart';
 import 'screens/chat_screen.dart';
 
 void main() {
@@ -16,10 +17,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ListenableProvider<SocketProvider>(create: (_) => SocketProvider()),
+        ListenableProvider<SocketProvider>(
+          create: (_) => SocketProvider(),
+        ),
+        ListenableProvider<AuthProvider>(
+          create: (_) => AuthProvider(),
+        ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'EZ Chat',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
