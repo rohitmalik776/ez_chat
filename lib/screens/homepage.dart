@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/providers/auth_provider.dart';
-import 'package:hello_world/screens/chat_screen.dart';
+import 'package:hello_world/utils/process_state_enums.dart';
+import 'package:hello_world/widgets/signup_widget.dart';
 
-import 'package:provider/provider.dart';
-import '../providers/socket_provider.dart';
-
-enum LoginState { toLogin, loggingIn, loginFailed }
+import '../widgets/signin_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,15 +12,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool _isLogin = true;
   @override
-  LoginState loginState = LoginState.toLogin;
   Widget build(BuildContext context) {
-    SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
     final mediaQuery = MediaQuery.of(context);
-    final auth = Provider.of<AuthProvider>(context, listen: false);
-    String username = '';
-    String password = '';
-
     return SizedBox(
       width: mediaQuery.size.width,
       height: mediaQuery.size.height,
@@ -33,55 +25,15 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text('Welcome!'),
-            const Text('Enter your username and password!'),
-            TextField(
-              decoration: const InputDecoration(
-                  hintText: 'Enter your name', labelText: 'Name'),
-              onChanged: (value) {
-                username = value;
-              },
-            ),
-            TextField(
-              decoration:
-                  const InputDecoration(hintText: 'Enter your password'),
-              onChanged: (value) {
-                password = value;
-              },
-            ),
+            _isLogin ? const LoginWidget() : const SignupWidget(),
             ElevatedButton(
-              child: Column(
-                children: [
-                  (loginState == LoginState.toLogin)
-                      ? const Icon(Icons.chevron_right)
-                      : (loginState == LoginState.loggingIn)
-                          ? const CircularProgressIndicator()
-                          : const Icon(Icons.close),
-                  (loginState == LoginState.toLogin)
-                      ? const Text('Log in')
-                      : (loginState == LoginState.loggingIn)
-                          ? const Text('Logging in...')
-                          : const Text('Login failed!'),
-                ],
+              child: Text(
+                _isLogin ? 'Want to sign up?' : 'Login instead',
               ),
-              onPressed: () async {
+              onPressed: () {
                 setState(() {
-                  loginState = LoginState.loggingIn;
+                  _isLogin = !_isLogin;
                 });
-                print(loginState);
-                bool loginSuccess = await auth.signIn(username, password);
-                // After authentication
-                if (loginSuccess == false) {
-                  setState(() {
-                    loginState = LoginState.loginFailed;
-                    print('login failed');
-                  });
-                  return;
-                }
-                socket.connectToServer(auth.username);
-                Navigator.of(context).pushReplacementNamed(
-                  ChatScreen.routeName,
-                  arguments: {'username': auth.username},
-                );
               },
             ),
           ],

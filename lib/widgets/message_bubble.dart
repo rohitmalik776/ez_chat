@@ -25,7 +25,7 @@ class MessageBubble extends StatelessWidget {
             ),
             child: Text(
               message.text,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20,
               ),
             ),
@@ -37,7 +37,7 @@ class MessageBubble extends StatelessWidget {
             padding: const EdgeInsets.all(5),
             child: Text(
               message.author,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 14,
               ),
             ),

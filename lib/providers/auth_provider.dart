@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class AuthProvider with ChangeNotifier {
-  static const String baseUrl = 'http://192.168.0.104:5000';
-  String _jwt = '';
-  String _username = '';
+  static const String baseUrl = 'http://192.168.0.106:5000';
+  String? _jwt;
+  String? _username;
   Future<bool> signUp(String username, String password) async {
-    final response = await http.post(Uri.parse('$baseUrl/api/auth/signup'),
+    final response = await http.post(Uri.parse('$baseUrl/api/auth/signup/'),
         body: json.encode({
           'username': username,
           'password': password,
@@ -25,7 +25,6 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> signIn(String username, String password) async {
-    print('Made sign in call');
     try {
       final response = await http.post(Uri.parse('$baseUrl/api/auth/signin/'),
           body: json.encode({
@@ -45,13 +44,18 @@ class AuthProvider with ChangeNotifier {
     return false;
   }
 
-  String get jwt {
-    String newJwt = _jwt;
+  void signOut() {
+    _jwt = null;
+    _username = null;
+  }
+
+  String? get jwt {
+    String? newJwt = _jwt;
     return newJwt;
   }
 
-  String get username {
-    String newUsername = _username;
+  String? get username {
+    String? newUsername = _username;
     return newUsername;
   }
 }

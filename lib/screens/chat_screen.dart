@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hello_world/models/message.dart';
+import 'package:hello_world/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:socket_io_client/socket_io_client.dart' as soc_io;
 
 import '../providers/socket_provider.dart';
 import '../widgets/message_bubble.dart';
@@ -17,9 +17,8 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-    String username = (ModalRoute.of(context)!.settings.arguments
-            as Map<String, String>)['username'] ??
-        'username';
+    AuthProvider auth = Provider.of<AuthProvider>(context, listen: false);
+    String username = auth.username ?? 'unknown user';
     String messageText = '';
     TextEditingController _textController = TextEditingController();
     var socketProvider = Provider.of<SocketProvider>(context, listen: true);
@@ -53,23 +52,20 @@ class _ChatScreenState extends State<ChatScreen> {
           Row(
             children: [
               Expanded(
-                child: Container(
-                  child: TextField(
-                      controller: _textController,
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.all(10),
-                        hintText: 'Send a message',
-                      ),
-                      onChanged: (currMessage) {
-                        messageText = currMessage;
-                      }),
-                ),
+                child: TextField(
+                    controller: _textController,
+                    decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(10),
+                      hintText: 'Send a message',
+                    ),
+                    onChanged: (currMessage) {
+                      messageText = currMessage;
+                    }),
               ),
               IconButton(
-                icon: Icon(Icons.send),
+                icon: const Icon(Icons.send),
                 onPressed: () {
                   if (messageText.isNotEmpty) {
-                    // TODO Use auth here
                     socketProvider.sendGlobalMessage(
                       Message(
                         text: messageText,
