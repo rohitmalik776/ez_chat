@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_world/models/message.dart';
 import 'package:hello_world/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../providers/socket_provider.dart';
 import '../widgets/message_bubble.dart';
@@ -40,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     return Padding(
                       padding: const EdgeInsets.all(2.0),
                       child: SizedBox(
-                        height: 58,
+                        height: message.imageBytes == null ? 60 : 200,
                         child: MessageBubble(message, username),
                       ),
                     );
@@ -78,6 +79,19 @@ class _ChatScreenState extends State<ChatScreen> {
                   }
                 },
               ),
+              IconButton(
+                  icon: Icon(Icons.camera_alt),
+                  onPressed: () async {
+                    var image = await ImagePicker()
+                        .pickImage(source: ImageSource.camera);
+                    var binaryImage = await image?.readAsBytes();
+                    socketProvider.sendGlobalMessage(Message(
+                      text: '',
+                      author: username,
+                      timestamp: DateTime.now(),
+                      imageBytes: binaryImage,
+                    ));
+                  }),
             ],
           ),
         ],

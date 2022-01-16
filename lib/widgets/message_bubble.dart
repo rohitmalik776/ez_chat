@@ -23,12 +23,22 @@ class MessageBubble extends StatelessWidget {
                 Radius.circular(20),
               ),
             ),
-            child: Text(
-              message.text,
-              style: const TextStyle(
-                fontSize: 20,
-              ),
-            ),
+            child: (message.imageBytes != null)
+                ? ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    child: Image.memory(
+                      message.imageBytes!,
+                      height: 200,
+                      width: 200,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                : Text(
+                    message.text,
+                    style: const TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
           ),
         ),
         Align(

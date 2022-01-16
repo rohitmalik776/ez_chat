@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 
@@ -8,7 +9,7 @@ import '../models/message.dart';
 
 class SocketProvider with ChangeNotifier {
   final Map<String, List<Message>> _messages = {'global': []};
-  final socket = soc_io.io('ws://192.168.0.104:5000/', <String, dynamic>{
+  final socket = soc_io.io('ws://192.168.0.106:5000/', <String, dynamic>{
     'transports': ['websocket'],
     'autoConnect': false,
   });
@@ -30,7 +31,6 @@ class SocketProvider with ChangeNotifier {
 
   void sendGlobalMessage(Message message) {
     var encodedMessage = jsonEncode(message.toJson());
-    print('send: $encodedMessage');
     socket.emit('global message', encodedMessage);
   }
 

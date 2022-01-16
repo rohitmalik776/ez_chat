@@ -15,18 +15,22 @@ class LoginWidget extends StatefulWidget {
 class _LoginWidgetState extends State<LoginWidget> {
   ProcessState processState = ProcessState.idle;
   bool _isObfuscated = true;
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  String username = '';
+  String password = '';
 
   @override
   Widget build(BuildContext context) {
     SocketProvider socket = Provider.of<SocketProvider>(context, listen: false);
 
     final auth = Provider.of<AuthProvider>(context, listen: false);
-    String username = '';
-    String password = '';
     return Column(
       children: [
         const Text('Enter your username and password!'),
         TextField(
+          controller: _usernameController,
           decoration: const InputDecoration(
               hintText: 'Enter your username', labelText: 'username'),
           onChanged: (value) {
@@ -34,6 +38,7 @@ class _LoginWidgetState extends State<LoginWidget> {
           },
         ),
         TextField(
+          controller: _passwordController,
           decoration: InputDecoration(
             hintText: 'Enter your password',
             labelText: 'password',
@@ -76,6 +81,8 @@ class _LoginWidgetState extends State<LoginWidget> {
             if (loginSuccess == false) {
               setState(() {
                 processState = ProcessState.fail;
+                _usernameController.value = TextEditingValue(text: username);
+                _passwordController.value = TextEditingValue(text: password);
               });
               return;
             }

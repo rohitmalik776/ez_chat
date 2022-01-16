@@ -11,6 +11,7 @@ class AuthProvider with ChangeNotifier {
     final response = await http.post(Uri.parse('$baseUrl/api/auth/signup/'),
         body: json.encode({
           'username': username,
+          // TODO: Improve password security
           'password': password,
         }));
     final decodedResponse = json.decode(response.body) as Map<String, Object?>;
@@ -49,13 +50,7 @@ class AuthProvider with ChangeNotifier {
     _username = null;
   }
 
-  String? get jwt {
-    String? newJwt = _jwt;
-    return newJwt;
-  }
+  String? get jwt => _jwt;
 
-  String? get username {
-    String? newUsername = _username;
-    return newUsername;
-  }
+  String? get username => _username;
 }
