@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/providers/auth_provider.dart';
-import 'package:hello_world/providers/socket_provider.dart';
-import 'package:hello_world/screens/chat_screen.dart';
-import 'package:hello_world/utils/process_state_enums.dart';
+import '/providers/auth_provider.dart';
+import '/providers/socket_provider.dart';
+import '/screens/chat_screen.dart';
+import '/utils/process_state_enums.dart';
 import 'package:provider/provider.dart';
 
 class LoginWidget extends StatefulWidget {

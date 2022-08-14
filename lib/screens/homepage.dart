@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hello_world/utils/process_state_enums.dart';
-import 'package:hello_world/widgets/signup_widget.dart';
+import '/widgets/signup_widget.dart';
 
 import '../widgets/signin_widget.dart';
 
