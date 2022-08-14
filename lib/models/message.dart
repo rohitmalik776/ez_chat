@@ -14,23 +14,26 @@ class Message {
     late final String text;
     late final String author;
     late final DateTime timestamp;
-    late final Uint8List imageBytes;
+    Uint8List? imageBytes;
     try {
       Map<String, dynamic> recData = jsonDecode(data);
       text = recData['text'];
       author = recData['author'];
       timestamp = DateTime.parse(recData['timestamp']);
-      var imageBytesList = recData['imageBytes'];
-      List<int> newList = List<int>.from(imageBytesList);
-      imageBytes = Uint8List.fromList(newList);
-    } on Exception catch (e) {
-      throw e;
+      List<dynamic>? imageBytesList = recData['imageBytes'];
+      if (imageBytesList != null) {
+        List<int>? newList = List<int>.from(imageBytesList);
+        imageBytes = Uint8List.fromList(newList);
+      }
+    } on Exception catch (_) {
+      rethrow;
     }
     return Message(
-        text: text,
-        author: author,
-        timestamp: timestamp,
-        imageBytes: imageBytes);
+      text: text,
+      author: author,
+      timestamp: timestamp,
+      imageBytes: imageBytes,
+    );
   }
   final String text;
   final String author;

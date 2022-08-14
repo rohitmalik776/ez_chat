@@ -90,7 +90,7 @@ class _SignupWidgetState extends State<SignupWidget> {
               });
               return;
             }
-            socket.connectToServer(auth.username!);
+            socket.connectToServer(auth.username!, auth.jwt!);
             Navigator.of(context).pushReplacementNamed(
               ChatScreen.routeName,
             );

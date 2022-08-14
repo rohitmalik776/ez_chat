@@ -86,7 +86,7 @@ class _LoginWidgetState extends State<LoginWidget> {
               });
               return;
             }
-            socket.connectToServer(auth.username!);
+            socket.connectToServer(auth.username!, auth.jwt!);
             Navigator.of(context).pushReplacementNamed(
               ChatScreen.routeName,
             );

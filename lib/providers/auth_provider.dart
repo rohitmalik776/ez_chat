@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../constants.dart';
 
 class AuthProvider with ChangeNotifier {
-  static const String baseUrl = 'http://192.168.0.106:5000';
   String? _jwt;
   String? _username;
   Future<bool> signUp(String username, String password) async {
